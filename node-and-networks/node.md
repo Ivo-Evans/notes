@@ -1,5 +1,6 @@
 Node is a non-browser JavaScript environment. It uses the V8 Chromium engine.
 
+
 # Associated software
 ## NVM
 NVM stands for Node Version Manager and it is a way of installing specific versions of Node. I have found it extremely easy and straightforward.
@@ -82,6 +83,7 @@ npm run ... should be your default way to run node scripts, or to use node packa
 
 ```npm run``` has so many advantages that I think some people on my cohort don't even *know* you can use the node command to execute a particular script. 
 
+
 ## Yarn
 Yarn is basically an alternative to NPM. Apparently it used to be faster, but is no longer appreciably so. Since NPM comes included with node and Yarn has to be installed, I've been using only NPM. 
 
@@ -136,6 +138,8 @@ You can see a full list of core modules in the node repl with
 ```javascript
 require("module").builtinModules
 ```
+
+There's not that many. It's worth checking out. 
 
 ### Some third party modules
 
@@ -200,12 +204,12 @@ The basic principle is this. Create a _token_ which you can send out to the user
     {
         name: "",
         logged-in: "",
-        date-created: "",
+        iat: "", // issued at time: 
         max-age: ""
     }
 ```
 
-Use that _token_ plus a serverside _secret_ (a secret string) to generate a _signature_. The wannabbe hacker is free to change information on the token's 'payload', but if they do they won't get far. When they send you the modified token, you'll use its payload, in combination with your secret, to generate a new signature; if it doesn't match the signature that the hacker sent in, you know that the payload must have been modified. And while the hacker can freely modify the signature too, they have no hope of modifying it _correctly_, so that it matches up with the payload.
+These pieces of information are called 'claims', and cumulatively, are a payload. Use the payload plus a serverside _secret_ (a secret string) to generate a _signature_. The wannabbe hacker is free to change details of the payload they receive, but if they do they won't get far. When they send you their modified token, you'll use its payload, in combination with your secret, to generate a new signature; if it doesn't match the signature that the hacker sent in, you know that the payload must have been modified. And while the hacker can freely modify the signature too, they have no hope of modifying it correctly, so that it matches up with the payload.
 
 This strategy is called JSON web tokens, or JWTs ('jewts'); it's useful for all kind of rest APIs, from being logged in to websites to simple API data calls. 
 
@@ -213,15 +217,30 @@ JWTs have three parts, separated from each other by dots:
 
     meta-information.payload.signature
 
-People often mistakenly think that the first two parts are encrypted, because they look like it. A speaker at FAC just yesterday said that they were. But they aren't - they're simply base-64 encoded. This is a computationally efficient way to represent text, but it isn't secure. You can turn any base-64 encoded string into a normally-encoded one in node with this:
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+People often mistakenly think that the first two parts are encrypted, because they look like it. A speaker at FAC just yesterday said that they were. But they aren't - they're simply base-64 encoded. This is an efficient way to represent text, but it isn't secure. You can turn any base-64 encoded string into a normally-encoded one in node with this:
 
 ```javascript
-    Buffer.from(example, 'base64')
+    Buffer.from(example, 'base64').toString()
 ```
 
-There are also websites that do it. It's totally not secure. 
+You can also go to jwt.io
+
+###### expiration v.s. manual logout
+Stateless authentication is great for logins that you've planned to expire at a certain time, but isn't so straightforward for manually logging out. For instance, you might need to store a blacklist of forbidden tokens or of their unique ids, for tokens which are still in date but which are marked as logged-out - but since you'd be storing this, it wouldn't be stateless authentication any more. 
+
+Here's a meme I nicked from an [article on the topic](https://dev.to/_arpy/how-to-log-out-when-using-jwt-4ajm)
+
+![jwt logout meme](memes/jwt-meme.jpg)
 
 ###### The practice
+
+We used the library jsonwebtokens to create tokens before sending them out in headers. 
+
+- create a token
+- send it out
+- verify its legitimacy 
 
 #### Testing
 
@@ -229,6 +248,8 @@ There are also websites that do it. It's totally not secure.
 
 #### postgres 
 
+#### filesystem utilities (dotenv)
+
 ## Return values v.s. callbacks
-![return values v.s. callbacks in node - drake meme](./meme.jpg)
+![return values v.s. callbacks in node - drake meme](memes/meme.jpg)
 

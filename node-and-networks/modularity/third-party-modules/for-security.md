@@ -119,9 +119,9 @@ The library inserts an accurate iat claim, or issued-at-time claim, for you.
 Similarly, the jsonwebtoken library inserts the exp, or expiration, field for you, but only if you specify expiresIn in the optional options argument. According to the JWT spec, exp is the number of seconds since the epoch. Since this isn't convenient, our library lets you give expiresIn, and adds that on to the current time to make the exp claim.  
 
 #### Send a token
-Once you have created a token it is time to send it out. You should send it as a cookie. 
+Once you have created a token it is time to send it out. If you're sending it to a website, you should send it as a cookie. 
 
-express has a [res.cookie() function](https://expressjs.com/en/api.html#res.cookie), and with Node's http module you can use setHeader. Let's focus on Express.  
+express has a [res.cookie() function](https://expressjs.com/en/api.html#res.cookie), and with Node's http module you can use setHeader, but let's focus on Express.  
 
 The first argument of Express's res.cookie() is a string. In our case it should be ```'token'````. This is the key of the cookie. The second is the object to be the value of the token. The third is the options argument. For cookies, this argument is important. Observe the example:
 
@@ -135,9 +135,24 @@ res
   .redirect(301, '/admin')
   ```
 
+If you're not sending the token to a website, you can't send it as a cookie. You could just send it as a header.
+
+```javascript
+res.set({
+    Authorization: 'Bearer ' + token
+    // make sure to set all your headers at once, or use res.append instead of res.set
+})
+```
+
 #### receive and verify a token
 You can use the express middleware cookie-parser, after npm installing it. 
 
-If you're using it, you should be able to use ```req.cookies.token``` to get your token. 
+If you're using it, you should be able to use ```req.cookies.token``` to get your token. You can then verify it with jsonwebtoken
+
+```javascript
+const token = req.cookies.token // req is param of callback
+const verdict = jwt.verify(token, secret)
+// verdict is boolean. async version of jwt.verify takes callback as third argument and passes res to callback
+```
 
 #### bonus: use a token to make a request to a server

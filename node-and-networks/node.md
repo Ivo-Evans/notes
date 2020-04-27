@@ -94,7 +94,7 @@ Yarn also innovated with versioning somehow, and NPM responded by introducing th
 I've used Node to make servers, so that's my emphasis here.
 
 ## Modularity
-Ok, so a Node script has certain functionality - basically the functionality of fundamental JavaScript - automatically. On top of that, there are a series of 'core modules' - to use these in a script, you must require the module at the top of the script, and access the properties of the returned object - that you don't need to install. Thirdy, there are third-party modules, the packages we talked about earlier. And finally you can write multi-file programs by using the require keyword and pointing to files in your own filesystem.
+Ok, so a Node script has certain functionality - basically the functionality of fundamental JavaScript - automatically. On top of that, there are a series of 'core modules' that you don't need to install, but do need to require at the top of your script. Once you've required them, you can access the properties of the returned object. Thirdy, there are third-party modules, the packages we talked about earlier. And finally you can write multi-file programs by using the require keyword and pointing to files in your own filesystem.
 
 ```javascript
 const path = require("path") // a core module
@@ -150,9 +150,9 @@ I'm starting with the one I've understood best. I've covered two security strate
 ###### The theory
 You encrypt a string by applying a hashing algorithm to it. The idea is that, given the string, the algorithm will reliably create the same output, but that the input cannot be reverse-engineered from the output. 
 
-Hashing algorithms are also deliberately convoluted to slow down their execution. This prevents brute-forcing a password once you have its hashed version. One way to control the speed of an algorithm is to add more or less rounds - basically to repeat it more or less times. Which segues nicely onto our third feature:
+Hashing algorithms are also deliberately convoluted to slow down their execution. This prevents brute-forcing a password once you have its hashed version. 
 
-Long encryption time and one-way hashing still isn't quite enough, because, if hackers get their hands on your database of hashed passwords, they can use 'rainbow tables' which match up common passwords to their hashed results. Organisations add 'salt' to passwords when they encrypt them. The salt is some extra characters. This means that the user's hashed passwords will never match those found on a rainbow table.
+However, these two measures, one-way hashing and long encryption time, aren't enough, because hackers buy and, in some cases, make tables containing hashed versions of common passwords. To solve this problem, organisations add 'salt' to their passwords before they encrypt them. The salt is not publicised, but neither is it secret: it is typically appended to the end of the hash after it has been used to generate the hash. The function of the salt is just to make the hashed output different to the input. That way, even if a hacker has the hashed password and the salt, they will need to generate a salt-specific rainbow table of common passwords and _then_ do the comparison. If you further use random salt for each password, then each password will require a new rainbow table. Because hashing algorithms are deliberately slow, password-specific rainbow tables are prohibitively expensive for a hacker.
 
 
 ###### The practice
@@ -192,8 +192,6 @@ bcryptjs.compare("jim", password, (err, res) => {
 })
 ```
 
-Here's a question: if you don't need to provide the salt for the re-encryption, it is probably derivable from the hashed passwords; but if the salt is derivable from the hashed passwords, what does salt do to increase security and prevent the use of rainbow tables? The only thing I can think of is slowing down comparisons between real and rainbow-table passwords. But I am still more than a little bit confused to be honest.
-
 ##### Signing data
 ###### The theory
 You _sign_ data when you want to give it away, and make it publicly available, but you want to make sure that nobody can _change_ it without you knowing. The context we encountered this in is stateless authentication: securely keeping a user logged in, without keeping any information about whether they're signed in on the server.
@@ -209,7 +207,7 @@ The basic principle is this. Create a _token_ which you can send out to the user
     }
 ```
 
-These pieces of information are called 'claims', and cumulatively, are a payload. Use the payload plus a serverside _secret_ (a secret string) to generate a _signature_. The wannabbe hacker is free to change details of the payload they receive, but if they do they won't get far. When they send you their modified token, you'll use its payload, in combination with your secret, to generate a new signature; if it doesn't match the signature that the hacker sent in, you know that the payload must have been modified. And while the hacker can freely modify the signature too, they have no hope of modifying it correctly, so that it matches up with the payload.
+These pieces of information are called 'claims', and cumulatively, are a payload. Use the payload plus a serverside _secret_ (a secret string) to generate a _signature_ which you send out along with the payload. The wannabbe hacker is free to change details of the payload they receive, but it won't help them. When they send you their modified token, you'll use its payload, in combination with your secret, to generate a new signature; if it doesn't match the signature that the hacker sent in, you know that the payload must have been modified. And while the hacker can freely modify the signature too, they have no hope of modifying it correctly, so that it matches up with the payload.
 
 This strategy is called JSON web tokens, or JWTs ('jewts'); it's useful for all kind of rest APIs, from being logged in to websites to simple API data calls. 
 
@@ -228,7 +226,7 @@ People often mistakenly think that the first two parts are encrypted, because th
 You can also go to jwt.io
 
 ###### expiration v.s. manual logout
-Stateless authentication is great for logins that you've planned to expire at a certain time, but isn't so straightforward for manually logging out. For instance, you might need to store a blacklist of forbidden tokens or of their unique ids, for tokens which are still in date but which are marked as logged-out - but since you'd be storing this, it wouldn't be stateless authentication any more. 
+Stateless authentication is great for logins that you've planned to expire at a certain time, but isn't so straightforward for manually logging out. For instance, you might need to store a blacklist of forbidden tokens (or of their unique ids) which are still in date but which are marked as logged-out - but since you'd be storing things, it wouldn't be stateless authentication any more. 
 
 Here's a meme I nicked from an [article on the topic](https://dev.to/_arpy/how-to-log-out-when-using-jwt-4ajm)
 
@@ -249,6 +247,8 @@ We used the library jsonwebtokens to create tokens before sending them out in he
 #### postgres 
 
 #### filesystem utilities (dotenv)
+
+#### express
 
 ## Return values v.s. callbacks
 ![return values v.s. callbacks in node - drake meme](memes/meme.jpg)

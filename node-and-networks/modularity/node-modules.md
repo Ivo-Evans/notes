@@ -1,5 +1,11 @@
 ## Modularity
-Ok, so a Node script has certain functionality - basically the functionality of fundamental JavaScript - automatically. On top of that, there are a series of 'core modules' that you don't need to install, but do need to require at the top of your script. Once you've required them, you can access the properties of the returned object. Thirdy, there are third-party modules, the packages we talked about earlier. And finally you can write multi-file programs by using the require keyword and pointing to files in your own filesystem.
+A Node script has certain functionality - basically the functionality of fundamental JavaScript - automatically. O
+
+n top of that, there are a series of 'core modules' that you don't need to install, but do need to require at the top of your script. Once you've required them, you can access the properties of the returned object. 
+
+Thirdy, there are third-party modules, the packages we talked about earlier. 
+
+And finally you can write multi-file programs by using the require keyword and pointing to files in your own filesystem.
 
 ```javascript
 const path = require("path") // a core module

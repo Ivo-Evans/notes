@@ -203,7 +203,7 @@ The basic principle is this. Create a _token_ which you can send out to the user
         name: "",
         logged-in: "",
         iat: "", // issued at time: 
-        max-age: ""
+        exp: "" // expires
     }
 ```
 
@@ -232,13 +232,34 @@ Here's a meme I nicked from an [article on the topic](https://dev.to/_arpy/how-t
 
 ![jwt logout meme](memes/jwt-meme.jpg)
 
-###### The practice
+###### The practice: make a token
 
-We used the library jsonwebtokens to create tokens before sending them out in headers. 
+We used the library jsonwebtoken to create tokens before sending them out in headers. 
 
-- create a token
-- send it out
-- verify its legitimacy 
+Creating a JWT with jsonwebtoken is pretty simple. There's a synchronous and an asynchronous version, but the two are actually basically the same in this case. 
+
+```javascript
+const jwt = require('jsonwebtoken')
+const payload = {
+    user: "user mcuserson",
+    loggedIn: true, 
+}
+const options = {
+    expiresIn: '1h' // you can also use seconds if you like. 
+}
+secret = process.env.SECRET || "ghw43u2332gher4w3pgnsre" // for example purposes
+jwt.sign(payload, secret, options)
+```
+
+The library inserts an accurate iat, or issued-at-time field, for you. 
+
+Similarly, the jsonwebtoken library inserts the exp, or expiration, field for you, but only if you specify expiresIn in the optional options argument. According to the JWT spec, exp is the number of seconds since the epoch. Since this isn't convenient, our library lets you give expiresIn, and adds that on to the current time to make the exp claim.  
+
+##### The practice: send a token
+Once you have created a token it is time to send it out. You 
+
+
+##### The practice: receive and verify a token
 
 #### Testing
 

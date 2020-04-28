@@ -1,6 +1,19 @@
 # Security
 I've covered two security strategies, for each of which I've used a different module. The first strategy is _encryption_. The second strategy is _signing_.
 
+
+  - [Encrypting data](#encrypting-data)
+    - [The theory](#the-theory)
+    - [The practice](#the-practice)
+  - [Signing data](#signing-data)
+    - [The theory](#the-theory-1)
+      - [expiration v.s. manual logout](#expiration-vs-manual-logout)
+    - [The practice](#the-practice-1)
+      - [make a token](#make-a-token)
+      - [Send a token](#send-a-token)
+      - [receive and verify a token](#receive-and-verify-a-token)
+      - [bonus: use a token to make a request to a server](#bonus-use-a-token-to-make-a-request-to-a-server)
+
 ## Encrypting data
 ### The theory
 You encrypt a string by applying a hashing algorithm to it. The idea is that, given the string, the algorithm will reliably create the same output, but that the input cannot be reverse-engineered from the output. 

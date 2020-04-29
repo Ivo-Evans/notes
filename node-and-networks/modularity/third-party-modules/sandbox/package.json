@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
+    "supertest": "^4.0.2",
     "tap-spec": "^5.0.0",
     "tape": "^5.0.0"
   }

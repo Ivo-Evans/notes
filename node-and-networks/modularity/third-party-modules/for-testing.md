@@ -150,3 +150,4 @@ The get method also accepts a callback which lets you use string-parsing functio
 
 If you want to add request headers, add them in an object as the second argument to nock()
 
+The docs are pretty good for this one., if you have time to read them.

@@ -74,11 +74,49 @@ server.get('/api/:number', (req, res, next) => {
 
 
 ## middleware
+The cool thing about express is that it passes your requests through chains of functions, until res.send() or something similar is called. The functions that come before your own handlers that do this are typically called _middleware_, and you might use middleware as a substitute for guard clauses. Middleware can either be registered on a specific route, or for all routes. Let's first look at using it in a specific route
 
 ### adding middleware as an extra argument
 
+```javascript
+server.post('add-photo', authenticate, addPhoto)
+```
+
+In this example, authenticate could either be a function you wrote yourself, or a third-party function. Just like the handlers we considered above, authenticate should have a req, res and next parameter. It will typically work by changing the properties of req and res before calling next().
+
 ### adding middleware with server.use()
 
+You can also register middleware with server.use(). This means that the middleware will be called before the final callback on all routes following the specific call to server.use().
+
+Order really matters here - server.use() must be written before the http-method function, or that function won't use it. In this way, you can chunk your code. 
+
 ## Creating a 404 with server.use()
+You can also use server.use() to create a 'catch-all' function for lost requests at the end of your code:
+
+```javascript
+server.use((req, res, next) => {
+    res.status(404).send("we did not recognise the route")
+})
+```
 
 ### Error handling functions
+
+You can also create middleware to handle errors. This middleware is formally distinguished from other middleware by the fact that it has four arguments, not three: req, res, next and __err__. You should add it using server.use() at the __end__ of your program.
+
+```javascript
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+```
+
+How a function like this gets called depends on the kind of error. For a _syncronous_ error you need do nothing; express will catch it and find the error-handling middleware. For an asynchronous error, you need to give the errore object to next() as an argument, e.g.
+
+```javascript
+try {
+    const p = "q"
+    p = "!p"
+} catch(err) {
+    next(err)
+}
+```

@@ -1,3 +1,5 @@
+
+
 - query function and its return values
 - .env values
 - building a database in javascript

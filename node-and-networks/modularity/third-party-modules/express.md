@@ -1,5 +1,20 @@
 # Express
 
+- [Express](#express)
+  - [Introduction](#introduction)
+  - [the callback for a route](#the-callback-for-a-route)
+    - [The properties of the request object](#the-properties-of-the-request-object)
+      - [Some easy properties](#some-easy-properties)
+      - [req.params](#reqparams)
+    - [The properties of the response object](#the-properties-of-the-response-object)
+  - [middleware](#middleware)
+    - [adding middleware as an extra argument](#adding-middleware-as-an-extra-argument)
+    - [adding middleware with server.use()](#adding-middleware-with-serveruse)
+  - [Creating a 404 with server.use()](#creating-a-404-with-serveruse)
+  - [Error handling functions](#error-handling-functions)
+
+## Introduction
+
 Express is an unopinonated framework for web servers. 
 
 The basic typical express workflow looks like this:
@@ -14,7 +29,7 @@ server.use( /*callback*/ )
 server.listen(/*port, optional callback, e.g. one which consoles logs a confirmation*/)
 ```
 
-express is imported as a function = calling it creates an object, with a number of methods. Some of these methods, like get() above, register routes on the server. If you wanted to use a post request, you would use the post() method. listen(), then, is the function that actually makes the server go live. 
+express is imported as a function. Calling it creates an object, with a number of methods. Some of these methods, like get() above, register routes on the server. If you wanted to use a post request, you would use the post() method. listen(), then, is the function that actually makes the server go live. 
 
 ## the callback for a route
 
@@ -82,7 +97,7 @@ The cool thing about express is that it passes your requests through chains of f
 server.post('add-photo', authenticate, addPhoto)
 ```
 
-In this example, authenticate could either be a function you wrote yourself, or a third-party function. Just like the handlers we considered above, authenticate should have a req, res and next parameter. It will typically work by changing the properties of req and res before calling next().
+In this example, authenticate could either be a function you wrote yourself, or a third-party function. Just like the handlers we considered above, authenticate should have a req, res and next parameter. It will typically work by changing the properties of req and res before calling next() or res.send() (for instance if authentication failed).
 
 ### adding middleware with server.use()
 
@@ -99,7 +114,7 @@ server.use((req, res, next) => {
 })
 ```
 
-### Error handling functions
+## Error handling functions
 
 You can also create middleware to handle errors. This middleware is formally distinguished from other middleware by the fact that it has four arguments, not three: req, res, next and __err__. You should add it using server.use() at the __end__ of your program.
 
@@ -110,7 +125,7 @@ app.use(function (err, req, res, next) {
 })
 ```
 
-How a function like this gets called depends on the kind of error. For a _syncronous_ error you need do nothing; express will catch it and find the error-handling middleware. For an asynchronous error, you need to give the errore object to next() as an argument, e.g.
+How a function like this gets called depends on the kind of error. For a _syncronous_ error you need do nothing; express will catch it and use the error-handling middleware. For an asynchronous error, you need to give the error object to next() as an argument, e.g.
 
 ```javascript
 try {

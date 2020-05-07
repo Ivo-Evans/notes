@@ -1,7 +1,9 @@
 # Express
 
+Express is an unopinonated framework for web servers. 
+
 - [Express](#express)
-  - [Introduction](#introduction)
+  - [A basic express server](#a-basic-express-server)
   - [the callback for a route](#the-callback-for-a-route)
     - [The properties of the request object](#the-properties-of-the-request-object)
       - [Some easy properties](#some-easy-properties)
@@ -13,9 +15,7 @@
   - [Creating a 404 with server.use()](#creating-a-404-with-serveruse)
   - [Error handling functions](#error-handling-functions)
 
-## Introduction
-
-Express is an unopinonated framework for web servers. 
+## A basic express server
 
 The basic typical express workflow looks like this:
 

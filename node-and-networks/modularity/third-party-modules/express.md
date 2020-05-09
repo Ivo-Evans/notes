@@ -29,7 +29,7 @@ server.use( /*callback*/ )
 server.listen(/*port, optional callback, e.g. one which consoles logs a confirmation*/)
 ```
 
-express is imported as a function. Calling it creates an object, with a number of methods. Some of these methods, like get() above, register routes on the server. If you wanted to use a post request, you would use the post() method. listen(), then, is the function that actually makes the server go live. 
+express is imported as a function. Calling it creates an object, with a number of methods. Some of these methods, like get() above, register routes on the server. If you wanted to use a post request, you would use the post() method. listen(), is the function that actually makes the server go live. Let's circle back around to use(), which we'll describe in the sections on middleware.
 
 ## the callback for a route
 
@@ -57,7 +57,7 @@ Clearly, there's a lot to list here; furthermore, these properties depend on whe
 |req.body|contains key-value pairs of the information from the body. By default it is undefined - it is only populated if you use body-parsing middleware like express.json() or express.urlencoded()
 |req.cookies|gets cookies. Requires the cookie-parser middleware|
 |req.method|string representing http method|
-|req.query| an object representing the query string in the request url (the bit after ?)|
+|req.query| an object representing the query string in the request url (the bit after ```?```)|
 |req.get| get a specific header. ```req.get.content-type``` |
 
 #### req.params
@@ -80,9 +80,9 @@ server.get('/api/:number', (req, res, next) => {
 |property|description|
 |-|-|
 |res.cookie()| add a cookie - check [the docs](https://expressjs.com/en/api.html#res.cookie) for details|
-|res.clearCookie()| ask a browser nicely to clear the cookie you describe|
+|res.clearCookie()| ask a browser nicely to clear the cookie you describe. Reputable browsers like Chrome or Firefox will comply|
 |res.end()| In express, end() is used to end the response __prematurely__ |
-|res.send(arg)| sends arg, which can be of any type, and finished the response. Detects appropriate content-type header depending on value of argument. |
+|res.send(arg)| sends ```arg```, which can be of any type, and finishes the response. Detects appropriate content-type header depending on data-type of argument. |
 |res.redirect(code, path)| redirects to another path, often in your router but can also be full-fledged urls to external sites. Typically, the code is 302, for redirect |
 | res.status(n) | sets the response status code. This function also returns res, so it can be chained: ```res.status(200).send("happy days")```|
 | res.set(obj) | Sets the response headers. To set headers one by one, use res.append() |

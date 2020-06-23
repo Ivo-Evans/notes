@@ -89,6 +89,10 @@ JSX syntax is designed to be html-_like_, but it has a few important differences
 3. 'props', the parts of JSX corresponding to HTML attributes, must use camelCase and often have different names. For instance, class in html is `className` in JSX.
 
 ## State and change in a React app
+The thing that distinguishes a framework from a library is inversion of control: when using a framework, you have to do things as the framework wants you to. React is a framework, and when it comes to managing change in your applications, this becomes salient.
+
+Let's first think about what will happen if you try to manage change as you would if you weren't using a frontend framework. 
+
 - conditional re-rendering
 - state is managed by react
 - closures and setState

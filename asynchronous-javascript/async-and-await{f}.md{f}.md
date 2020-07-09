@@ -18,3 +18,13 @@ Basically it works like this. await lets you create a blocking effect _within_ a
   console.log('pineapples')
 
 This logs 'pineapples' while we are fetching content from the API, then logs the quote the API gave us.
+
+An async function always returns a promise. Thus,
+
+```javascript
+async function myFunction() {
+    return 5 + 5
+}
+
+myFunction().then(console.log).catch(console.log)
+```

@@ -14,7 +14,7 @@ A stack is a last in first out data structure.
 ## Implementation
 
 ### Arrays
-Arrays and strings have methods that mean you could just treat them like stacks.
+Arrays and strings have methods that mean you could just treat them like stacks (although strings lack any pop() equivalent).
 
 Here's an example of using stacks to discover palindromes
 

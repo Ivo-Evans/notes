@@ -1,0 +1,1 @@
+- In React, inside ({}) for props/args, press ctrl+space to see available options

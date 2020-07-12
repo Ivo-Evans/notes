@@ -1,5 +1,5 @@
 
-On p.46 of Pocket Python
+On p.53 of Pocket Python
 
 
 

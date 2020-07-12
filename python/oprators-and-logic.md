@@ -58,6 +58,7 @@ five_to_ten(11) # False
 - Slice a nonunclusive range with a colon: `'abcdef'[2:4] # 'cd'`
 - Slice from beginning or end by omitting one term:  `'abcdef'[:4] # 'abcd'`, `'abcdef'[2:] # 'cdef'`
 - You can combine range slicing with negative indexing: `'abcdef'[1:-1] # 'bcde'`, `'abcdef'[4:-4] # ''`, `'abcdef'[-4:4] # 'cd'`
+- You can combine start and end defaults to make a shallow copy with `[:]`
 
 #### Range slicing with a stride
 - You can add a _third_ term, which is the stride:
@@ -81,8 +82,21 @@ numbers = [1, 2, 3, 4, 5]
 numbers[:2] = ['1', '2']
 print(numbers) # ['1', '2', 3, 4, 5]
 ```
-- For simple ranges you can insert any length you like
-- for stepped ranges you have to insert the same number as are in the range: 
+- As well as replacing, you can insert:
+```
+numbers = [3, 4, 5]
+numbers[:0] = [1, 2]
+print(numbers) 
+# [1, 2, 3, 4, 5]
+numbers[len(numbers):] = [6, 7]
+print(numbers) 
+# [1, 2, 3, 4, 5, 6, 7]
+numbers[3:3] = [4.2, 4.4, 4.6, 4.8] # note 3:3 - 3:4 would insert before index 3 for some reason
+print(numbers) 
+# [1, 2, 3, 4.2, 4.4, 4.6, 4.8, 4, 5, 6, 7]
+
+```
+- for stepped ranges insertion is limited to replacement - you need to insert the same number you take out: 
 ```
 zeros = [0, 0, 0, 0, 0, 0]
 zeros[::2] = [1, 1, 1]

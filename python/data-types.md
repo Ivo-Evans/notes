@@ -37,11 +37,13 @@ Python has two division methods, divide and floor divide:
 "this""is""concatenated"
 ```
 - triple-quoted strings create multi-line blocks of text (automatically insert \n). Attempts to define multiline blocks without triple quotes will throw errors.
+```
 """
 multi
 line
 string
 """
+```
 - In Python people often put a letter before the quote marks, which affects the behaviour of the strings
   - r, or raw strings, treat everything as literal text (no escape sequences)
   - f, or format strings, let you interpolate:
@@ -63,6 +65,32 @@ Python seems to have a fair few string methods.
 "myString".center(12, '-')
 # '--myString--'
 # why not eh
+```
+
+### Lists
+
+#### How looping and iterating works
+When you loop, use a list comprehension (see relevant .md file), or use a function like map, Python creates an iterable object from the list, calls it's `__iter__()` method to create an iterator, and then iterates through the iterator. Each index is an object in the OOP sense with methods.
+
+#### Some common methods
+
+- list.pop(index) # pops AT ANY INDEX. If no argument is provided does the traditional pop
+- list.append() # push equivalent
+- list.sort(key=None, reverse=False) # key is a function to yield a number
+- list.reverse()
+- list.insert(element, index) # to insert many elements use `list[i:i] = [1, 2]`
+
+#### What about map, foreach, filter, reduce/inject etc?
+
+Python 3.0 removed reduce() in favour of for-loops (for readability). foreach never existed, but the python for..in loop is equivalent. map and filter exist but they aren't list methods, they're functions that take a list as their second argument.
+
+```
+def my_func(n):
+    return Ord(n)
+
+ordinals = map(my_func, ['a', 'b', 'c'])
+# ordinals is an iterator
+list(ordinals)
 ```
 
 ### Dictionaries

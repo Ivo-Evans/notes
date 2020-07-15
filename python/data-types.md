@@ -79,6 +79,7 @@ When you loop, use a list comprehension (see relevant .md file), or use a functi
 - list.sort(key=None, reverse=False) # key is a function to yield a number
 - list.reverse()
 - list.insert(element, index) # to insert many elements use `list[i:i] = [1, 2]`
+- zip(list, list)
 
 #### What about map, foreach, filter, reduce/inject etc?
 
@@ -93,9 +94,17 @@ ordinals = map(my_func, ['a', 'b', 'c'])
 list(ordinals)
 ```
 
+### Tuples
+Tuples are like immutable lists. They use a call-by-value-esque strategy - two identical tuples are considered to be the same. 
+
+There aren't many methods defined for them. You can use the sequence operators that you can use for lists, including concatenation, len(), [], and `val in my_tuple === true`.
+
+
 ### Dictionaries
-- keys should be strings
+- Any immutable object is a valid key; that is, a string, a number, a boolean or a tuple
+  - it seems that tuples don't use the call by reference but call by value strategy - two idential tuples are considered the same
 - square-bracket lookup works but dot access doesn't
+- Trying to access a nonexistent key with [] throws an error, but not with my_dict.get()
 - Add new keys with the assignment operator just like JS
 - delete a key with the del keyword: `del my_obj['c']`
 - Find the number of pairs with len(): `len(my_obj)`
@@ -103,3 +112,26 @@ list(ordinals)
   - Naturally this only works for key lookup
 - Get a list of keys: `list(my_dict)` or an iterable: `iter(my_dict)`
 - Iterate through keys of a dictionary: `for k in my_dict:`
+
+## How iterating works
+- in Python 3, calling an iterating method creates a view object, and the view object 'retains the order in the original dictionary'.
+
+## Some useful methods
+- dictionary.update(second_dictionary) # folds second_dictionary into first, similar to spread operator in JS
+- dictionary.keys()
+- dicitonary.values()
+- dictionary.items() # arr of arrs [[k, v], [k, v]]
+- dictionary.copy() # returns a shallow copy
+
+## Two keyword patterns
+
+### Loop
+```
+for wolo in wolokey:
+    print(wolokey)
+```
+### check for key:
+```
+"four" in wolo
+# True
+```
